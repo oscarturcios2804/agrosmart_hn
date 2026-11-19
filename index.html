@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgroSmart HN — App Móvil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="phone-frame">
+    <div class="status-bar">
+      <span>9:41</span>
+      <div class="notch"></div>
+      <div class="status-icons">
+        <i class="fa-solid fa-signal"></i>
+        <i class="fa-solid fa-wifi"></i>
+        <i class="fa-solid fa-battery-three-quarters"></i>
+      </div>
+    </div>
+
+    <header class="app-header">
+      <div class="brand-group">
+        <div class="brand-logo">
+          <i class="fa-solid fa-seedling"></i>
+        </div>
+        <div>
+          <span class="app-brand">AgroSmart HN</span>
+          <p class="app-location"><i class="fa-solid fa-location-dot"></i> Villanueva, Cortés</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <span class="app-badge"><i class="fa-solid fa-circle-check"></i> Activo</span>
+      </div>
+    </header>
+
+    <main class="app-screen">
+      <!-- PANTALLA 1: INICIO / BIENVENIDA -->
+      <section class="tab-view active" id="view-inicio">
+        <div class="greeting-banner">
+          <span class="greeting-pill"><i class="fa-solid fa-sun"></i> Parcela Activa · Villanueva</span>
+          <h2>Hola, ¿qué tal? ¿Cómo estás, Carlos?</h2>
+          <p>Tu asistente agrícola está listo para acompañarte hoy en el campo.</p>
+        </div>
+
+        <div class="featured-tip-card">
+          <div class="tip-top-row">
+            <span class="tip-badge"><i class="fa-solid fa-sparkles"></i> Consejo del día</span>
+            <button type="button" class="btn-tip-next" id="btn-cambiar-consejo">
+              <i class="fa-solid fa-rotate"></i> Otro consejo
+            </button>
+          </div>
+          <h3 id="consejo-titulo">Riego matutino para mayor absorción</h3>
+          <p id="consejo-texto">
+            Riega tus cultivos antes de las 8:30 a.m. para reducir la evaporación por el calor del valle y mantener las raíces frescas durante el día.
+          </p>
+        </div>
+
+        <div class="quick-actions-grid">
+          <button type="button" class="quick-card" data-jump="view-diagnostico">
+            <div class="quick-icon green"><i class="fa-solid fa-camera-retro"></i></div>
+            <strong>Escanear hoja</strong>
+            <span>Diagnóstico rápido</span>
+          </button>
+          <button type="button" class="quick-card" data-jump="view-clima">
+            <div class="quick-icon amber"><i class="fa-solid fa-cloud-sun-rain"></i></div>
+            <strong>Clima hoy</strong>
+            <span>33°C · Villanueva</span>
+          </button>
+          <button type="button" class="quick-card" data-jump="view-mapa">
+            <div class="quick-icon teal"><i class="fa-solid fa-store"></i></div>
+            <strong>Agroservicios</strong>
+            <span>Mapa y rutas</span>
+          </button>
+        </div>
+
+        <div class="tips-list-section">
+          <div class="list-header">
+            <h3>Más recomendaciones para tu finca</h3>
+            <span>Toca para destacar</span>
+          </div>
+
+          <button type="button" class="tip-row active" data-tip-index="0">
+            <div class="tip-row-icon"><i class="fa-solid fa-droplet"></i></div>
+            <div>
+              <strong>Control de humedad en suelo</strong>
+              <span>Evita encharcamientos en zonas bajas tras lluvias.</span>
+            </div>
+          </button>
+
+          <button type="button" class="tip-row" data-tip-index="1">
+            <div class="tip-row-icon"><i class="fa-solid fa-shield-virus"></i></div>
+            <div>
+              <strong>Revisión preventiva de hojas</strong>
+              <span>Inspecciona el envés de las hojas cada 3 días.</span>
+            </div>
+          </button>
+
+          <button type="button" class="tip-row" data-tip-index="2">
+            <div class="tip-row-icon"><i class="fa-solid fa-flask"></i></div>
+            <div>
+              <strong>Fertilización foliar segura</strong>
+              <span>Aplica en horas frescas sin viento fuerte ni sol directo.</span>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <!-- PANTALLA 2: ESCÁNER / DIAGNÓSTICO FITOSANITARIO -->
+      <section class="tab-view" id="view-diagnostico">
+        <div class="section-head">
+          <h2>Diagnóstico Fitosanitario</h2>
+          <p>Escanea la hoja en tiempo real o sube una foto.</p>
+        </div>
+
+        <div class="camera-card">
+          <div class="camera-viewport" id="camera-viewport">
+            <video id="camera-video" autoplay playsinline muted></video>
+            <img id="photo-preview" alt="Vista previa de hoja" />
+
+            <div class="corner-guide tl"></div>
+            <div class="corner-guide tr"></div>
+            <div class="corner-guide bl"></div>
+            <div class="corner-guide br"></div>
+
+            <div class="scan-laser" id="scan-laser"></div>
+
+            <div class="camera-placeholder" id="camera-placeholder">
+              <div class="pulse-ring">
+                <i class="fa-solid fa-leaf"></i>
+              </div>
+              <p>Visor listo para captura</p>
+              <span>Centra la hoja dentro del marco</span>
+            </div>
+          </div>
+
+          <div class="camera-controls">
+            <button type="button" class="btn-primary" id="btn-abrir-camara">
+              <i class="fa-solid fa-camera"></i> Abrir cámara
+            </button>
+            <button type="button" class="btn-capture" id="btn-capturar" disabled>
+              <i class="fa-solid fa-wand-magic-sparkles"></i> Escanear
+            </button>
+          </div>
+
+          <label class="upload-link" for="input-foto">
+            <i class="fa-regular fa-image"></i> Subir fotografía desde galería
+            <input type="file" id="input-foto" accept="image/*" hidden />
+          </label>
+        </div>
+
+        <div class="result-card" id="resultado-card">
+          <div class="result-header">
+            <span class="status-pill" id="diag-badge"><i class="fa-solid fa-microscope"></i> En espera</span>
+            <span class="confidence-text" id="diag-confianza">IA Agrícola v2</span>
+          </div>
+          <h3 id="diag-titulo">Sin muestra analizada</h3>
+          <p id="diag-detalle">Enciende la cámara o selecciona una foto foliar para detectar plagas, hongos o deficiencias nutricionales.</p>
+          <div class="treatment-box" id="diag-tratamiento" hidden></div>
+        </div>
+      </section>
+
+      <!-- PANTALLA 3: CLIMA Y ALERTAS DINÁMICAS -->
+      <section class="tab-view" id="view-clima">
+        <div class="section-head">
+          <h2>Clima y Alertas Locales</h2>
+          <p>Pronóstico agroclimático · Villanueva, Cortés</p>
+        </div>
+
+        <div class="weather-switcher" role="group" aria-label="Condición climática">
+          <button type="button" class="weather-chip active" data-weather="soleado">
+            <i class="fa-solid fa-sun"></i> Soleado
+          </button>
+          <button type="button" class="weather-chip" data-weather="nublado">
+            <i class="fa-solid fa-cloud-sun"></i> Nublado
+          </button>
+          <button type="button" class="weather-chip" data-weather="lluvia">
+            <i class="fa-solid fa-cloud-showers-heavy"></i> Lluvia
+          </button>
+        </div>
+
+        <div class="weather-stage soleado" id="weather-stage">
+          <div class="sky-graphics">
+            <div class="sun-orb"></div>
+            <div class="cloud cloud-1"></div>
+            <div class="cloud cloud-2"></div>
+            <div class="rain-layer" id="rain-layer">
+              <span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span>
+            </div>
+          </div>
+
+          <div class="weather-info">
+            <div class="temp-row">
+              <span class="weather-temp" id="weather-temp">33°C</span>
+              <div>
+                <span class="weather-condition" id="weather-condition">Cielo despejado</span>
+                <span class="weather-sub" id="weather-feels">Sensación térmica 35°C</span>
+              </div>
+            </div>
+            <div class="weather-metrics">
+              <span id="metric-humedad"><i class="fa-solid fa-droplet"></i> 58%</span>
+              <span id="metric-viento"><i class="fa-solid fa-wind"></i> 14 km/h</span>
+              <span id="metric-lluvia"><i class="fa-solid fa-umbrella"></i> 10%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="forecast-strip">
+          <div class="day-card active" data-weather="soleado">
+            <span>Hoy</span>
+            <i class="fa-solid fa-sun icon-sun"></i>
+            <strong>33°</strong>
+          </div>
+          <div class="day-card" data-weather="nublado">
+            <span>Mañana</span>
+            <i class="fa-solid fa-cloud-sun icon-cloud"></i>
+            <strong>29°</strong>
+          </div>
+          <div class="day-card" data-weather="lluvia">
+            <span>Viernes</span>
+            <i class="fa-solid fa-cloud-rain icon-rain"></i>
+            <strong>26°</strong>
+          </div>
+          <div class="day-card" data-weather="soleado">
+            <span>Sábado</span>
+            <i class="fa-solid fa-sun icon-sun"></i>
+            <strong>32°</strong>
+          </div>
+        </div>
+
+        <div class="alert-card" id="weather-alert-card">
+          <div class="alert-icon-box" id="weather-alert-icon">
+            <i class="fa-solid fa-sun"></i>
+          </div>
+          <div>
+            <h3 id="weather-alert-title">Recomendación para día soleado</h3>
+            <p id="weather-alert-desc">Riega temprano antes de las 8:30 a.m. para evitar evaporación rápida y proteger cultivos jóvenes.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANTALLA 4: PUNTOS DE VENTA / RED DE AGROSERVICIOS -->
+      <section class="tab-view" id="view-mapa">
+        <div class="section-head">
+          <h2>Puntos de Venta y Agroservicios</h2>
+          <p>Distribuidoras y rutas cercanas en Villanueva.</p>
+        </div>
+
+        <div class="interactive-map" id="interactive-map">
+          <div class="map-grid"></div>
+          <div class="map-park"></div>
+          <div class="map-road-h"></div>
+          <div class="map-road-v"></div>
+
+          <svg class="route-svg" viewBox="0 0 320 175" preserveAspectRatio="none">
+            <path id="route-line" d="M 58 135 Q 140 112 212 52" />
+          </svg>
+
+          <div class="user-dot"><i class="fa-solid fa-tractor"></i> Tú</div>
+
+          <button type="button" class="map-marker active" style="top: 34px; left: 185px;" data-store="0">
+            <i class="fa-solid fa-location-dot"></i> Central
+          </button>
+          <button type="button" class="map-marker" style="top: 94px; left: 222px;" data-store="1">
+            <i class="fa-solid fa-location-dot"></i> Campo Verde
+          </button>
+          <button type="button" class="map-marker" style="top: 48px; left: 88px;" data-store="2">
+            <i class="fa-solid fa-location-dot"></i> AgroSula
+          </button>
+        </div>
+
+        <div class="selected-store-card" id="selected-store-card">
+          <div class="store-top">
+            <div>
+              <h3 id="store-name">Agroservicio Central Villanueva</h3>
+              <span class="store-meta" id="store-meta"><i class="fa-solid fa-route"></i> 1.8 km · ~6 min · Abierto</span>
+            </div>
+            <span class="store-tag"><i class="fa-solid fa-store"></i> Insumos</span>
+          </div>
+          <p class="store-items" id="store-items">Fertilizantes foliares, bioestimulantes, semillas certificadas y control orgánico.</p>
+          <div class="store-actions">
+            <a id="btn-google-maps" href="https://www.google.com/maps/search/?api=1&query=Agroservicio+Villanueva+Cortes+Honduras" target="_blank" rel="noopener noreferrer" class="btn-maps">
+              <i class="fa-solid fa-map-location-dot"></i> Ir con Google Maps
+            </a>
+            <a id="btn-llamar" href="tel:+50426700000" class="btn-call">
+              <i class="fa-solid fa-phone"></i> Llamar
+            </a>
+          </div>
+        </div>
+
+        <div class="store-list">
+          <button type="button" class="store-row active" data-store="0">
+            <div class="store-row-left">
+              <div class="store-icon"><i class="fa-solid fa-seedling"></i></div>
+              <div>
+                <strong>Agroservicio Central Villanueva</strong>
+                <span>Barrio El Centro · 1.8 km</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </button>
+
+          <button type="button" class="store-row" data-store="1">
+            <div class="store-row-left">
+              <div class="store-icon"><i class="fa-solid fa-bottle-droplet"></i></div>
+              <div>
+                <strong>Distribuidora Campo Verde</strong>
+                <span>Salida a San Manuel · 3.4 km</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </button>
+
+          <button type="button" class="store-row" data-store="2">
+            <div class="store-row-left">
+              <div class="store-icon"><i class="fa-solid fa-warehouse"></i></div>
+              <div>
+                <strong>Insumos Agrícolas AgroSula</strong>
+                <span>Carretera CA-5 Norte · 2.5 km</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right arrow"></i>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Menú inferior">
+      <button type="button" class="nav-btn active" data-view="view-inicio">
+        <i class="fa-solid fa-house nav-icon"></i>
+        <span>Inicio</span>
+      </button>
+      <button type="button" class="nav-btn" data-view="view-diagnostico">
+        <i class="fa-solid fa-camera-retro nav-icon"></i>
+        <span>Escáner</span>
+      </button>
+      <button type="button" class="nav-btn" data-view="view-clima">
+        <i class="fa-solid fa-cloud-sun-rain nav-icon"></i>
+        <span>Clima</span>
+      </button>
+      <button type="button" class="nav-btn" data-view="view-mapa">
+        <i class="fa-solid fa-store nav-icon"></i>
+        <span>Puntos</span>
+      </button>
+    </nav>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
